@@ -1,0 +1,42 @@
+--Queries
+
+--Query_1: List the employee number, last name, first name, sex, and salary of each employee.
+SELECT e.emp_no, e.last_name, e.first_name, e.sex, s.salary
+FROM employees e, salaries s 
+WHERE e.emp_no = s.emp_no;
+
+--Query_2: List the first name, last name, and hire date for the employees who were hired in 1986.
+SELECT first_name, last_name, hire_date
+FROM employees 
+WHERE EXTRACT(YEAR FROM hire_date) = '1986';
+
+--Query_3: List the manager of each department along with their department number, department name, employee number, last name, and first name.
+SELECT de.dept_no, de.dept_name,dm.emp_no, em.last_name, em.first_name
+FROM departments de, dept_manager dm, employees em
+WHERE de.dept_no = dm.dept_no AND dm.emp_no = em.emp_no;
+
+--Query_4: List the department number for each employee along with that employee’s employee number, last name, first name, and department name.
+SELECT de.dept_no, em.emp_no, em.last_name, em.first_name, de.dept_name
+FROM departments de, dept_emp dem, employees em
+WHERE de.dept_no = dem.dept_no AND dem.emp_no = em.emp_no;
+
+--Query_5: List first name, last name, and sex of each employee whose first name is Hercules and whose last name begins with the letter B.
+SELECT first_name, last_name, sex
+FROM employees
+WHERE first_name = 'Hercules' AND last_name LIKE 'B_%';
+
+--Query_6: List each employee in the Sales department, including their employee number, last name, and first name.
+SELECT demp.emp_no, emp.last_name, emp.first_name, de.dept_name
+FROM employees emp, departments de, dept_emp demp
+WHERE de.dept_no=demp.dept_no AND demp.emp_no=emp.emp_no AND de.dept_name='Sales';
+
+--Query_7: List each employee in the Sales and Development departments, including their employee number, last name, first name, and department name.
+SELECT demp.emp_no, emp.last_name, emp.first_name, de.dept_name
+FROM employees emp, departments de, dept_emp demp
+WHERE de.dept_no=demp.dept_no AND demp.emp_no=emp.emp_no AND de.dept_name IN ('Sales', 'Development');
+
+--Query_8: List the frequency counts, in descending order, of all the employee last names (that is, how many employees share each last name).
+SELECT count(last_name), last_name
+FROM employees
+GROUP BY last_name
+ORDER BY count(last_name) DESC;
